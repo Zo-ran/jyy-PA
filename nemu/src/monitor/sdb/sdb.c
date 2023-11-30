@@ -55,7 +55,9 @@ static int cmd_q(char *args) {
 static int cmd_help(char *args);
 
 static int cmd_si(char *args) {
-  printf("%lu\n", strlen(args));
+  int a;
+  sscanf(args, "%d", &a);
+  printf("%d\n", a);
   return 0;
 }
 
