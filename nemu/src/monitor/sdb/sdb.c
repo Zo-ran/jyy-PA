@@ -55,7 +55,7 @@ static int cmd_q(char *args) {
 static int cmd_help(char *args);
 
 static int cmd_si(char *args) {
-  int a;
+  int a = 1;
   sscanf(args, "%d", &a);
   printf("%d\n", a);
   return 0;
