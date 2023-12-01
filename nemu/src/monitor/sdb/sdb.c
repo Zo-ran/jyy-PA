@@ -83,7 +83,7 @@ static int cmd_x(char *args) {
       printf("%#010x: ", addr);
       for (int j = 0; j < 4; ++j) {
         word_t data = paddr_read(addr, 4);
-        printf("%#010x\t", data);
+        printf("%#010x  ", data);
         addr += 4;
       }
       printf("\n");
@@ -91,7 +91,7 @@ static int cmd_x(char *args) {
     printf("%#08x: ", addr);
     for (int i = 0; i < N % 4; ++i) {
       word_t data = paddr_read(addr, 4);
-      printf("%#010x\t", data);
+      printf("%#010x  ", data);
       addr += 4;
     }
     printf("\n");
