@@ -58,7 +58,16 @@ static int cmd_si(char *args) {
   int n = 1;
   if (args != NULL)
     sscanf(args, "%d", &n);
-  printf("%d\n", n);
+  cpu_exec(n);
+  return 0;
+}
+
+static int cmd_info(char *args) {
+  if (args != NULL && strcmp(args, "r") == 0) {
+    isa_reg_display();
+  } else{
+    printf("Undefined info command: \"%s\"", args);
+  }
   return 0;
 }
 
@@ -70,7 +79,8 @@ static struct {
   { "help", "Display information about all supported commands", cmd_help },
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
-  {"si", "Step one instruction exactly", cmd_si}
+  {"si", "Step one instruction exactly", cmd_si},
+  {"info", "Generic command for showing things about the program being debugged", cmd_info}
 };
 
 #define NR_CMD ARRLEN(cmd_table)
