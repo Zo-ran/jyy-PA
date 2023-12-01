@@ -76,8 +76,27 @@ static int cmd_info(char *args) {
 }
 
 static int cmd_x(char *args) {
-  word_t data = paddr_read(0x80000000, 4);
-  printf("%x", data);
+  int N;
+  paddr_t addr; 
+  if (sscanf(args, "%d%x", &N, &addr) == 2) {
+    for (int i = 0; i < N / 4; ++i) {
+      printf("%#08x: ", addr);
+      for (int j = 0; j < 4; ++j) {
+        word_t data = paddr_read(addr, 4);
+        printf("%#08x\t", data);
+        addr += 4;
+      }
+      printf("\n");
+    }
+    printf("%#08x: ", addr);
+    for (int i = 0; i < N % 4; ++i) {
+      word_t data = paddr_read(addr, 4);
+      printf("%#08x\t", data);
+      addr += 4;
+    }
+  } else {
+    printf("Syntax error\n");
+  }
   return 0;
 }
 
