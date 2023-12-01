@@ -63,7 +63,10 @@ static int cmd_si(char *args) {
 }
 
 static int cmd_info(char *args) {
-  if (args != NULL && strcmp(args, "r") == 0) {
+  char *param = NULL;
+  if (args != NULL)
+    param = strtok(args, " ");
+  if (param != NULL && strcmp(param, "r") == 0) {
     isa_reg_display();
   } else{
     printf("Undefined info command: \"%s\"\n", args);
