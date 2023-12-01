@@ -66,7 +66,7 @@ static int cmd_info(char *args) {
   if (args != NULL && strcmp(args, "r") == 0) {
     isa_reg_display();
   } else{
-    printf("Undefined info command: \"%s\"", args);
+    printf("Undefined info command: \"%s\"\n", args);
   }
   return 0;
 }
