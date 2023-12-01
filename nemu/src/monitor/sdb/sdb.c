@@ -80,10 +80,10 @@ static int cmd_x(char *args) {
   paddr_t addr; 
   if (sscanf(args, "%d%x", &N, &addr) == 2) {
     for (int i = 0; i < N / 4; ++i) {
-      printf("%#08x: ", addr);
+      printf("%#010x: ", addr);
       for (int j = 0; j < 4; ++j) {
         word_t data = paddr_read(addr, 4);
-        printf("%#08x\t", data);
+        printf("%#010x\t", data);
         addr += 4;
       }
       printf("\n");
@@ -91,9 +91,10 @@ static int cmd_x(char *args) {
     printf("%#08x: ", addr);
     for (int i = 0; i < N % 4; ++i) {
       word_t data = paddr_read(addr, 4);
-      printf("%#08x\t", data);
+      printf("%#010x\t", data);
       addr += 4;
     }
+    printf("\n");
   } else {
     printf("Syntax error\n");
   }
