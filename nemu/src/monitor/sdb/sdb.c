@@ -17,6 +17,7 @@
 #include <cpu/cpu.h>
 #include <readline/readline.h>
 #include <readline/history.h>
+#include <memory/paddr.h>
 #include "sdb.h"
 
 static int is_batch_mode = false;
@@ -74,6 +75,12 @@ static int cmd_info(char *args) {
   return 0;
 }
 
+static int cmd_x(char *args) {
+  word_t data = paddr_read(0x80000000, 4);
+  printf("%x", data);
+  return 0;
+}
+
 static struct {
   const char *name;
   const char *description;
@@ -83,7 +90,8 @@ static struct {
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
   {"si", "Step one instruction exactly", cmd_si},
-  {"info", "Generic command for showing things about the program being debugged", cmd_info}
+  {"info", "Generic command for showing things about the program being debugged", cmd_info},
+  {"x", "Examine memory: x N EXPR", cmd_x}
 };
 
 #define NR_CMD ARRLEN(cmd_table)
