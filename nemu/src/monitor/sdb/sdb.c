@@ -101,6 +101,10 @@ static int cmd_x(char *args) {
   return 0;
 }
 
+static int cmd_p(char *args) {
+  return 0;
+}
+
 static struct {
   const char *name;
   const char *description;
@@ -111,7 +115,8 @@ static struct {
   { "q", "Exit NEMU", cmd_q },
   {"si", "Step one instruction exactly", cmd_si},
   {"info", "Generic command for showing things about the program being debugged", cmd_info},
-  {"x", "Examine memory: x N EXPR", cmd_x}
+  {"x", "Examine memory: x N EXPR", cmd_x},
+  {"p", "Print value of expression EXP", cmd_p}
 };
 
 #define NR_CMD ARRLEN(cmd_table)
