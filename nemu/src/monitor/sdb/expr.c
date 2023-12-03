@@ -95,12 +95,12 @@ static bool make_token(char *e) {
           printf("%d\n", substr_len);
           switch (rules[i].token_type) {
             case TK_INT:
-              if (substr_len > 31) {
-                Log("The token %s is too long", substr_start);
-                assert(0);
-              } else {
+              if (substr_len < 31) {
                 Log("fuck");
-                // strcpy(tokens[nr_token].str, substr_start);
+                strcpy(tokens[nr_token].str, substr_start);
+              } else {
+                assert(0);
+                Log("The token %s is too long", substr_start);
               }
               break;
           }
