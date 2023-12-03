@@ -98,7 +98,7 @@ static bool make_token(char *e) {
               if (substr_len < 31) {
                 printf("%d\n", substr_len);
                 fflush(stdout);
-                strcpy(tokens[nr_token].str, substr_start);
+                // strcpy(tokens[nr_token].str, substr_start);
               } else {
                 assert(0);
                 Log("The token %s is too long", substr_start);
