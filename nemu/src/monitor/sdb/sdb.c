@@ -103,12 +103,12 @@ static int cmd_x(char *args) {
 
 static int cmd_p(char *args) {
   if (args != NULL) {
-    bool success;
-    word_t ret = expr(args, &success);
-    if (success) 
-      printf("%d\n", ret);
-    else
-      printf("Syntax error\n");
+    // bool success;
+    // word_t ret = expr(args, &success);
+    // if (success) 
+    //   printf("%d\n", ret);
+    // else
+    //   printf("Syntax error\n");
   }
   return 0;
 }
