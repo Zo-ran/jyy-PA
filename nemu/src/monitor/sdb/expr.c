@@ -90,16 +90,19 @@ static bool make_token(char *e) {
             i, rules[i].regex, position, substr_len, substr_len, substr_start);
 
         position += substr_len;
-
-        /* TODO: Now a new token is recognized with rules[i]. Add codes`
-         * to record the token in the array `tokens'. For certain types
-         * of tokens, some extra actions should be performed.
-         */
-
-        // switch (rules[i].token_type) {
-        //   default: TODO();
-        // }
-
+        if (rules[i].token_type != TK_NOTYPE) {
+          tokens[nr_token].type = rules[i].token_type;
+        }
+        switch (rules[i].token_type) {
+          case TK_INT:
+            if (substr_len > 31) {
+              Log("The token %s is too long", substr_start);
+              assert(0);
+            } else {
+              strcpy(tokens[nr_token].str, substr_start);
+            }
+        }
+        nr_token += 1;
         break;
       }
     }
