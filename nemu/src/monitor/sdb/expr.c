@@ -97,6 +97,7 @@ static bool make_token(char *e) {
             case TK_INT:
               if (substr_len < 31) {
                 printf("%d\n", substr_len);
+                fflush(stdout);
                 strcpy(tokens[nr_token].str, substr_start);
               } else {
                 assert(0);
