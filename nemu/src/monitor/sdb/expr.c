@@ -96,7 +96,6 @@ static bool make_token(char *e) {
           switch (rules[i].token_type) {
             case TK_INT:
               if (substr_len < 31) {
-                Log("fuck: %d", substr_len);
                 strcpy(tokens[nr_token].str, substr_start);
               } else {
                 assert(0);
