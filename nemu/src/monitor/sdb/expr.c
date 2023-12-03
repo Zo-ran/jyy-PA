@@ -100,7 +100,7 @@ static bool make_token(char *e) {
                 assert(0);
               } else {
                 Log("fuck");
-                // strcpy(tokens[nr_token].str, substr_start);
+                strcpy(tokens[nr_token].str, substr_start);
               }
               break;
           }
