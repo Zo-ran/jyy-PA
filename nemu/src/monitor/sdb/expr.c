@@ -88,24 +88,24 @@ static bool make_token(char *e) {
 
         Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s",
             i, rules[i].regex, position, substr_len, substr_len, substr_start);
+        printf("%d\n", substr_len);
 
         position += substr_len;
-        if (rules[i].token_type != TK_NOTYPE) {
-          tokens[nr_token].type = rules[i].token_type;
-          printf("%d\n", substr_len);
-          switch (rules[i].token_type) {
-            case TK_INT:
-              if (substr_len < 31) {
-                Log("fuck: %d", substr_len);
-                strcpy(tokens[nr_token].str, substr_start);
-              } else {
-                assert(0);
-                Log("The token %s is too long", substr_start);
-              }
-              break;
-          }
-          nr_token += 1;
-        }
+        // if (rules[i].token_type != TK_NOTYPE) {
+        //   tokens[nr_token].type = rules[i].token_type;
+        //   switch (rules[i].token_type) {
+        //     case TK_INT:
+        //       if (substr_len < 31) {
+        //         Log("fuck: %d", substr_len);
+        //         strcpy(tokens[nr_token].str, substr_start);
+        //       } else {
+        //         assert(0);
+        //         Log("The token %s is too long", substr_start);
+        //       }
+        //       break;
+        //   }
+        //   nr_token += 1;
+        // }
         break;
       }
     }
