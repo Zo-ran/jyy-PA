@@ -99,7 +99,7 @@ static bool make_token(char *e) {
                 Log("The token %s is too long", substr_start);
                 assert(0);
               } else {
-                strcpy(tokens[nr_token].str, substr_start);
+                // strcpy(tokens[nr_token].str, substr_start);
               }
               break;
           }
