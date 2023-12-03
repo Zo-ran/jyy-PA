@@ -92,17 +92,10 @@ static bool make_token(char *e) {
         position += substr_len;
         if (rules[i].token_type != TK_NOTYPE) {
           tokens[nr_token].type = rules[i].token_type;
-          printf("%d\n", substr_len);
           switch (rules[i].token_type) {
             case TK_INT:
-              if (substr_len < 31) {
-                printf("%d\n", substr_len);
-                fflush(stdout);
-                strcpy(tokens[nr_token].str, substr_start);
-              } else {
-                assert(0);
-                Log("The token %s is too long", substr_start);
-              }
+              assert(substr_len < 32);
+              strncpy(tokens[nr_token].str, substr_start, substr_len);
               break;
           }
           nr_token += 1;
