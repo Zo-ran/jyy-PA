@@ -24,6 +24,8 @@ enum {
   TK_NOTYPE = 256, 
   TK_EQ,
   TK_INT,
+  TK_LP,
+  TK_RP
 };
 
 static struct rule {
@@ -35,9 +37,10 @@ static struct rule {
   {"\\-", '-'},
   {"\\*", '*'},
   {"\\/", '/'},
-  {"\\-?"},
   {"==", TK_EQ},        
   {"[1-9][0-9]*|0", TK_INT},
+  {"\\(", TK_LP},
+  {"\\)", TK_RP}
 };
 
 #define NR_REGEX ARRLEN(rules)
@@ -87,16 +90,16 @@ static bool make_token(char *e) {
             i, rules[i].regex, position, substr_len, substr_len, substr_start);
 
         position += substr_len;
-
-        /* TODO: Now a new token is recognized with rules[i]. Add codes
-         * to record the token in the array `tokens'. For certain types
-         * of tokens, some extra actions should be performed.
-         */
-
-        switch (rules[i].token_type) {
-          default: TODO();
+        if (rules[i].token_type != TK_NOTYPE) {
+          tokens[nr_token].type = rules[i].token_type;
+          switch (rules[i].token_type) {
+            case TK_INT:
+              assert(substr_len < 32);
+              strncpy(tokens[nr_token].str, substr_start, substr_len);
+              break;
+          }
+          nr_token += 1;
         }
-
         break;
       }
     }
@@ -118,7 +121,7 @@ word_t expr(char *e, bool *success) {
   }
 
   /* TODO: Insert codes to evaluate the expression. */
-  TODO();
+  // TODO();
 
   return 0;
 }
