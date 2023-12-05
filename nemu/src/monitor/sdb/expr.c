@@ -115,9 +115,9 @@ static bool make_token(char *e) {
 }	
 
 bool check_parentheses(int p, int q, bool *success) {
-  int prefix = (tokens[p].type == TK_LP);
+  int prefix = 0;
   bool ret = true;
-  for (int i = p + 1; i <= q; ++i) {
+  for (int i = p; i <= q; ++i) {
     switch (tokens[i].type) {
       case TK_LP:
         prefix += 1;
