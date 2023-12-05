@@ -133,7 +133,12 @@ bool check_parentheses(int p, int q, bool *success) {
       return false;
     }
   }
-  return ret;
+  if (prefix != 0) {
+    *success = false;
+    return false;
+  } else {
+    return ret;
+  }
 }
 
 word_t eval(char *e, int p, int q, bool *success) {
