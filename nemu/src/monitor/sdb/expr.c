@@ -14,7 +14,7 @@
 ***************************************************************************************/
 
 #include <isa.h>
-
+#include <stdlib.h>
 /* We use the POSIX regex functions to process regular expressions.
  * Type 'man regex' for more information about POSIX regex functions.
  */
@@ -91,6 +91,7 @@ static bool make_token(char *e) {
 
         position += substr_len;
         if (rules[i].token_type != TK_NOTYPE) {
+          assert(nr_token < 32);
           tokens[nr_token].type = rules[i].token_type;
           switch (rules[i].token_type) {
             case TK_INT:
@@ -113,15 +114,33 @@ static bool make_token(char *e) {
   return true;
 }	
 
+bool check_parentheses(int p, int q, bool *success) {
+  for (int i = p; i <= q; ++i) {
+
+  }
+}
+
+word_t eval(char *e, int p, int q, bool *success) {
+  if (p > q) {
+    *success = false;
+    return 0;
+  } else if (p == q) {
+    if (tokens[p].type != TK_INT) {
+      *success = false;
+      return 0;
+    }
+    return atoi(tokens[p].str);
+  } else if (check_parentheses(p, q, success)) {
+    return eval(p + 1, q - 1);
+  } else {
+
+  }
+}
 
 word_t expr(char *e, bool *success) {
   if (!make_token(e)) {
     *success = false;
     return 0;
   }
-
-  /* TODO: Insert codes to evaluate the expression. */
-  // TODO();
-
-  return 0;
+  return eval(e, 0, nr_token - 1, success);
 }
