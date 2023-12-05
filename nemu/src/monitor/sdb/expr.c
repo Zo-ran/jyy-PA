@@ -126,7 +126,7 @@ bool check_parentheses(int p, int q, bool *success) {
         prefix -= 1;
         break;
     }
-    if (prefix == 0 && i != p) {
+    if (prefix == 0 && i != q) {
       ret = false;
     } else if (prefix < 0) {
       *success = false;
