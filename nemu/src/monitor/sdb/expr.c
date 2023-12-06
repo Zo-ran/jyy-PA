@@ -115,8 +115,29 @@ static bool make_token(char *e) {
 }	
 
 bool check_parentheses(int p, int q, bool *success) {
+  int prefix = 0;
+  bool ret = true;
   for (int i = p; i <= q; ++i) {
-
+    switch (tokens[i].type) {
+      case TK_LP:
+        prefix += 1;
+        break;
+      case TK_RP:
+        prefix -= 1;
+        break;
+    }
+    if (prefix == 0 && i != q) {
+      ret = false;
+    } else if (prefix < 0) {
+      *success = false;
+      return false;
+    }
+  }
+  if (prefix != 0) {
+    *success = false;
+    return false;
+  } else {
+    return ret;
   }
 }
 
@@ -130,11 +151,21 @@ word_t eval(char *e, int p, int q, bool *success) {
       return 0;
     }
     return atoi(tokens[p].str);
-  } else if (check_parentheses(p, q, success)) {
-    return eval(p + 1, q - 1);
   } else {
+    bool parentheses = check_parentheses(p, q, success);
+    if (parentheses) 
+      printf("parentheses\n");
+    else 
+      printf("not parentheses\n");
+    if (!success)
+      return 0;
+    if (parentheses) {
 
+    } else {
+
+    }
   }
+  return 0;
 }
 
 word_t expr(char *e, bool *success) {
