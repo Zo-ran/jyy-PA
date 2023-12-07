@@ -129,16 +129,10 @@ bool check_parentheses(int p, int q, bool *success) {
     if (prefix == 0 && i != q) {
       ret = false;
     } else if (prefix < 0) {
-      *success = false;
-      return false;
+      return *success = false;
     }
   }
-  if (prefix != 0) {
-    *success = false;
-    return false;
-  } else {
-    return ret;
-  }
+  return (prefix != 0) ? (*success = false) : ret;
 }
 
 word_t eval(char *e, int p, int q, bool *success) {
@@ -146,11 +140,7 @@ word_t eval(char *e, int p, int q, bool *success) {
     *success = false;
     return 0;
   } else if (p == q) {
-    if (tokens[p].type != TK_INT) {
-      *success = false;
-      return 0;
-    }
-    return atoi(tokens[p].str);
+    return (tokens[p].type != TK_INT) ? (*success = false) : atoi(tokens[p].str);
   } else {
     bool parentheses = check_parentheses(p, q, success);
     if (parentheses) 
@@ -160,7 +150,7 @@ word_t eval(char *e, int p, int q, bool *success) {
     if (!success)
       return 0;
     if (parentheses) {
-
+      
     } else {
 
     }
