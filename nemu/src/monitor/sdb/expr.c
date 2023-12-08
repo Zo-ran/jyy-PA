@@ -135,6 +135,15 @@ bool check_parentheses(int p, int q, bool *success) {
   return (prefix != 0) ? (*success = false) : ret;
 }
 
+int get_major_op(char *e, int p, int q) {
+  int prefix = 0;
+  for (int i = p; i <= q; ++i) {  
+    switch (tokens[i].type) {
+      
+    }
+  }
+}
+
 word_t eval(char *e, int p, int q, bool *success) {
   if (p > q) {
     *success = false;
@@ -143,16 +152,18 @@ word_t eval(char *e, int p, int q, bool *success) {
     return (tokens[p].type != TK_INT) ? (*success = false) : atoi(tokens[p].str);
   } else {
     bool parentheses = check_parentheses(p, q, success);
-    if (parentheses) 
-      printf("parentheses\n");
-    else 
-      printf("not parentheses\n");
     if (!success)
       return 0;
     if (parentheses) {
-      
+      return eval(e, p + 1, q - 1, success);
     } else {
+      int op = get_major_op(e, p, q);
+      word_t val1 = eval(e, p, op - 1, success), val2 = eval(e, op + 1, q, success);
+      if (!success)
+        return 0;
+      switch (tokens[op].type) {
 
+      }
     }
   }
   return 0;
