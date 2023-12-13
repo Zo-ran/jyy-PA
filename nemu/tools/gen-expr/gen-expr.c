@@ -20,9 +20,11 @@
 #include <assert.h>
 #include <string.h>
 
-// this should be enough
+// this should be enough 
 static char buf[65536] = {};
 static char code_buf[65536 + 128] = {}; // a little larger than `buf`
+static int depth = 0;
+static int max_depth = 100;
 static char *code_format =
 "#include <stdio.h>\n"
 "int main() { "
@@ -31,8 +33,40 @@ static char *code_format =
 "  return 0; "
 "}";
 
+static inline uint32_t choose(uint32_t n) {
+  return rand() % n;
+}
+
+static void append(const char *format, int data) {
+  char tmp[65536 + 128] = "\0";
+  snprintf(tmp, sizeof(tmp), format, buf, data);
+  strncpy(buf, tmp, strlen(tmp) < 65536 ? strlen(tmp) : 65536);
+}
+
+static inline void gen_rand_num() {
+  append("%s%d", rand());
+}
+
+static inline void gen(char c) {
+  append("%s%c", c);
+}
+
+static inline void gen_rand_op() {
+  switch (choose(4)) {
+    case 0: gen('+'); break;
+    case 1: gen('-'); break;
+    case 2: gen('*'); break;
+    case 3: gen('/'); break;
+  }
+}
+
 static void gen_rand_expr() {
-  buf[0] = '\0';
+  int c = (depth >= max_depth) ? 0 : choose(3);
+  switch (c) {
+    case 0: gen_rand_num(); break;
+    case 1: depth += 1; gen('('); gen_rand_expr(); gen(')'); break;
+    case 2: depth += 1; gen_rand_expr(); gen_rand_op(); gen_rand_expr(); break;
+  }
 }
 
 int main(int argc, char *argv[]) {
@@ -44,6 +78,8 @@ int main(int argc, char *argv[]) {
   }
   int i;
   for (i = 0; i < loop; i ++) {
+    memset(buf, 0, sizeof(buf));
+    depth = 0;
     gen_rand_expr();
 
     sprintf(code_buf, code_format, buf);

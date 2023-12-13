@@ -96,6 +96,7 @@ static bool make_token(char *e) {
           switch (rules[i].token_type) {
             case TK_INT:
               assert(substr_len < 32);
+              memset(tokens[nr_token].str, 0, sizeof(tokens[nr_token].str));
               strncpy(tokens[nr_token].str, substr_start, substr_len);
               break;
           }
@@ -135,19 +136,38 @@ bool check_parentheses(int p, int q, bool *success) {
   return (prefix != 0) ? (*success = false) : ret;
 }
 
-int get_major_op(char *e, int p, int q) {
-  int prefix = 0;
+int get_major_op(int p, int q) {
+  int prefix = 0, priority = '*', ret = -1;
   for (int i = p; i <= q; ++i) {  
     switch (tokens[i].type) {
-      
+      case TK_LP:
+        prefix += 1;
+        break;
+      case TK_RP:
+        prefix -= 1;
+        break;
+      case '+':
+      case '-':
+        if (prefix <= 0) {
+          ret = i;
+          priority = '+';
+        }
+        break;
+      case '*':
+      case '/':
+        if (prefix <= 0 && priority == '*') {
+          ret = i;
+          priority = '*';
+        }
+        break;
     }
   }
+  return ret;
 }
 
-word_t eval(char *e, int p, int q, bool *success) {
+word_t eval(int p, int q, bool *success) {
   if (p > q) {
-    *success = false;
-    return 0;
+    return *success = false;
   } else if (p == q) {
     return (tokens[p].type != TK_INT) ? (*success = false) : atoi(tokens[p].str);
   } else {
@@ -155,18 +175,23 @@ word_t eval(char *e, int p, int q, bool *success) {
     if (!success)
       return 0;
     if (parentheses) {
-      return eval(e, p + 1, q - 1, success);
+      return eval(p + 1, q - 1, success);
     } else {
-      int op = get_major_op(e, p, q);
-      word_t val1 = eval(e, p, op - 1, success), val2 = eval(e, op + 1, q, success);
+      int op = get_major_op(p, q);
+      if (op == -1)
+        return (*success = false);
+      word_t val1 = eval(p, op - 1, success), val2 = eval(op + 1, q, success);
       if (!success)
         return 0;
       switch (tokens[op].type) {
-
+        case '+': return val1 + val2;
+        case '-': return val1 - val2;
+        case '*': return val1 * val2;
+        case '/': return val1 / val2;
+        default: assert(0);
       }
     }
   }
-  return 0;
 }
 
 word_t expr(char *e, bool *success) {
@@ -174,5 +199,6 @@ word_t expr(char *e, bool *success) {
     *success = false;
     return 0;
   }
-  return eval(e, 0, nr_token - 1, success);
+  word_t ret = eval(0, nr_token - 1, success);
+  return ret;
 }
